@@ -28,10 +28,11 @@ class VGG19_modified(nn.Module):
 
         # we feed the input tensor to one layer after another until we get to the wanted layer for dreaming
         # and then we return the output of that layer
-        for id, layer in self.vgg19.named_children():           # one layer dream for now !!!
+        for id, layer in self.vgg19.named_children():
             tensor = layer(tensor)
-            if int(id) == self.layers:
+            if int(id) in self.layers:                          # one layer dream for now !!!
                 features.append(tensor)
-                break
+                return features
+                #break
 
-        return features
+        #return features
