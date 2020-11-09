@@ -7,12 +7,12 @@ from utils import *
 
 if __name__ == "__main__":
 
+    # Define which model and layers we are using
+    ut = Utils(model_name="vgg19")
     layers = ['conv4_4']
+
     model = VGG19_modified(layers=layers)
 
-    input_img = load_img_local("./starry_night.jpg")
+    input_img = ut.load_img(path="./starry_night.jpg")
 
-
-
-
-    display_img([input_img, input_img], layers)
+    ut.display_img([input_img, input_img], layers)
