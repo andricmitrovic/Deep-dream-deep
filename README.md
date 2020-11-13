@@ -1,4 +1,4 @@
-# Deep-dream-WIP
+# DeepDream-WIP
 
 WIP Implementation of DeepDream in PyTorch.
 
