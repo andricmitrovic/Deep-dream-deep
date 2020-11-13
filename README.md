@@ -1,6 +1,6 @@
-# Deep-dream-deep-WIP
+# Deep-dream-WIP
 
-WIP Implementation of DeepDream.
+WIP Implementation of DeepDream in PyTorch.
 
 Original blog: https://ai.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html
 
