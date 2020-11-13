@@ -43,7 +43,7 @@ class Utils:
 
         titles = ["original"] + titles
 
-        f = plt.figure(figsize=(12, 4))
+        f = plt.figure(figsize=(16, 8))
 
         for i in range(len(img_list)):
             f.add_subplot(1, len(img_list), i + 1)
