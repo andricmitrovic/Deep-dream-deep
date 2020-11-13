@@ -17,19 +17,27 @@ class Utils:
     def __init__(self, model_name):
         self.mean = []
         self.stdv = []
-
+        self.img_size = 0
         self.model_name = model_name
 
+        # Map desired init functions for each model, one for now
         model_mapping = {"vgg19": self.vgg19_param_init}
+        # Init mean, standard deviation and desired image size for resizing
         model_mapping[model_name]()
+
+        self.norm = T.Normalize(mean=self.mean, std=self.stdv)
+        self.resize = T.Resize(size=self.img_size, interpolation=2)
 
     def vgg19_param_init(self):
         self.mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
         self.stdv = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+        self.img_size = 512
 
     def load_img(self, path):
-        if self.model_name == "vgg19":
-            return Image.open(path)
+        img = Image.open(path)
+        img = self.resize(img)
+
+        return img
 
     def display_img(self, img_list, titles):
 
