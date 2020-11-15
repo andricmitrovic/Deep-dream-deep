@@ -1,6 +1,6 @@
 from Models.vgg19_modified import VGG19_modified
 from utils import *
-
+import scipy.ndimage as nd
 
 class DeepDreamClass():
     def __init__(self, image: torch.Tensor, layers: list):
@@ -15,6 +15,8 @@ class DeepDreamClass():
 
     def deepdream(self):
 
+        # Try using Gaussian pyramids here maybe instead of manual octaves
+
         # Image pyramid, octaves contain the normalized original image at different scales
         octaves = []
         orig_shape = self.image.size[::-1]  # PIL.size inverts the width and height
@@ -24,6 +26,23 @@ class DeepDreamClass():
             octaves += [tfms(self.image).unsqueeze(0)]
         octaves.reverse()   # Reverse octaves because we want to go from the the smallest scaled image to the original
 
+        details = torch.zeros_like(octaves[0])  # Init details with 0 tensor with the shape same as the smallest scaled img
+        dream_image = None
+
+        for num, octave in enumerate(octaves):
+            # Zoom the details tensor to the required size which is the size of the octave we are currently processing
+            details = nd.zoom(details, np.array(octave.shape) / np.array(details.shape), order=1)
+            print(f"\n{num+1}/{self.scales} : Current Shape of the details tensor: {details[0].shape}")
+
+            # Combine details tensor which contains patters and original image
+            enhanced_image = torch.tensor(details) + octave
+
+            # Try to find the patterns at this scale
+            dream_image = self.dream(enhanced_image, nb_iters=self.num_iters, lr=self.learning_rate)
+            # Extract out the patterns that the model learned at this scale
+            details = dream_image - enhanced_image
+
+        return dream_image
 
 
 if __name__ == "__main__":
