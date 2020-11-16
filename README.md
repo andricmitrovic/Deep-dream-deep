@@ -11,6 +11,8 @@ Todo:
   
   - update readme
   
+  - from noise image
+  
   - different models
   
   - gif
