@@ -4,6 +4,7 @@ import urllib
 from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
+import cv2 as cv
 
 if torch.cuda.is_available():
     device = torch.device('cuda')
@@ -47,7 +48,7 @@ class Utils:
 
         return img
 
-    def display_img(self, img_list, titles):
+    def _display_img(self, img_list, titles):
         """
         Displays original and dream images.
 
@@ -68,6 +69,33 @@ class Utils:
             else:
                 plt.imshow(img_list[i])
         plt.show()
+
+    def display_img(self, img_list, titles):
+
+        cv.namedWindow("DeepDream", cv.WINDOW_NORMAL)
+
+        titles = ["original"] + titles
+        i = 0
+        n = len(img_list)
+
+        while True:
+            if i!=0:
+                opencvImage = cv.cvtColor(self.denormalize(img_list[i]), cv.COLOR_RGB2BGR)
+            else:
+                opencvImage = cv.cvtColor(np.array(img_list[0]), cv.COLOR_RGB2BGR)
+            cv.imshow("DeepDream", opencvImage)
+
+            k = cv.waitKey(100)
+
+            if k == 100:
+                i = (i+1)%n
+            if k == 97:
+                i = (i-1)%n
+            if k == 27:
+                print("ESC has been pressed")
+                break
+
+        cv.destroyAllWindows()
 
     def clip(self, tensor):
         """
@@ -96,6 +124,6 @@ class Utils:
         mean = self.mean.reshape((3, 1, 1))
 
         tensor = (tensor * stdv) + mean # Inverse of normalization
-        tensor = T.ToPILImage()(tensor)
+        #tensor = T.ToPILImage()(tensor)
 
-        return tensor
+        return tensor.numpy().transpose(1, 2, 0)

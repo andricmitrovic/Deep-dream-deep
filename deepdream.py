@@ -3,6 +3,7 @@ from utils import *
 import scipy.ndimage as nd
 from scipy.ndimage.filters import gaussian_filter
 
+
 class DeepDreamClass():
     def __init__(self, image: torch.Tensor, layers: list):
         # Metaparameters
