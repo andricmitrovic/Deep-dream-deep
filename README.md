@@ -2,6 +2,9 @@
 
 WIP Implementation of DeepDream in PyTorch.
 
+<br>
+
+
 Todo:
 
   save images
@@ -10,7 +13,7 @@ Todo:
   
   gif
   
-
+<br>
 
 
 Original blog: https://ai.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html
