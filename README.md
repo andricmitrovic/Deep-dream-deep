@@ -3,8 +3,11 @@
 WIP Implementation of DeepDream in PyTorch.
 
 Todo:
+
   save images
+  
   different models
+  
   gif
   
 
