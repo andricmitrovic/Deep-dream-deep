@@ -24,7 +24,7 @@ Original blog: https://ai.googleblog.com/2015/06/inceptionism-going-deeper-into-
 
 <br>
 
-VGG19 layers: \
+VGG19 convolution layers: \
 conv1_1, conv1_2, \
 conv2_1, conv2_2, \
 conv3_1, conv3_2, conv3_3, conv3_4, \
