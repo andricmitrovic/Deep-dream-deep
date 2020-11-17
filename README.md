@@ -4,6 +4,16 @@ Implementation of DeepDream in PyTorch, WIP.
 
 <br>
 
+Current functionality:
+
+  - create dream image from input image using VGG19 model
+  
+  - create more than one dream image using different layers in one execution
+  
+  - display dream images ( "a" left image, "d" right image, "esc" exit) and save them
+
+<br>
+
 
 Todo:
 
