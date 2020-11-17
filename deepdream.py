@@ -95,13 +95,18 @@ class DeepDreamClass():
 if __name__ == "__main__":
     # Define which model and layers we are using
     model_name = "vgg19"
-    layers = ['conv1_1', 'conv5_1']
+    layers = ['conv1_1', 'conv1_2',
+              'conv2_1', 'conv2_2',
+              'conv3_1', 'conv3_2', 'conv3_3', 'conv3_4',
+              'conv4_1', 'conv4_2', 'conv4_3', 'conv4_4',
+              'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
 
     ut = Utils(model_name)
     input_img = ut.load_img("./starry_night.jpg")
 
     display_list = [input_img]
     for layer in layers:
+        print(f"\n{layer}")
         dream_object = DeepDreamClass(input_img, [layer])
         output_img = dream_object.deepdream()
         display_list.append(output_img)

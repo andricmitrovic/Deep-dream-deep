@@ -83,7 +83,7 @@ class Utils:
                 # We need to denormalize dream image before displaying it
                 cv_img = cv.cvtColor(self.denormalize(img_list[i]), cv.COLOR_RGB2BGR)
                 if save:
-                    filename = path + "/" + titles[i] + ".jpg"
+                    filename = path + "/" + self.model_name + "_" + titles[i] + ".jpg"
                     cv.imwrite(filename, cv_img * 255)  # mul by 255 because our img is in range [0,1]
             else:
                 cv_img = cv.cvtColor(np.array(img_list[0]), cv.COLOR_RGB2BGR)

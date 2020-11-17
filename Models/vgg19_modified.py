@@ -30,9 +30,6 @@ class VGG19_modified(nn.Module):
         # and then we return the output of that layer
         for id, layer in self.vgg19.named_children():
             tensor = layer(tensor)
-            if int(id) in self.layers:                          # one layer dream for now !!!
+            if int(id) in self.layers:
                 features.append(tensor)
                 return features
-                #break
-
-        #return features
