@@ -13,7 +13,9 @@ Todo:
   
   - from noise image
   
-  - different models
+  - different models trained on ImageNet for comparison
+  
+  - models trained on Places 365
   
   - gif
   
