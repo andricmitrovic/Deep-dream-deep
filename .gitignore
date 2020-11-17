@@ -2,3 +2,4 @@
 __pycache__
 Models/__pycache__
 Output/*
+!Output/ReadMe
