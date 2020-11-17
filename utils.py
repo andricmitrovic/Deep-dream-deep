@@ -5,6 +5,9 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
+from datetime import datetime
+import os
+
 
 if torch.cuda.is_available():
     device = torch.device('cuda')
@@ -15,7 +18,7 @@ else:
 
 
 class Utils:
-    def __init__(self, model_name):
+    def __init__(self, model_name: str):
         self.mean = np.array([])
         self.stdv = np.array([])
         self.img_size = 0
@@ -31,46 +34,37 @@ class Utils:
 
     def vgg19_param_init(self):
         """
-        Initializes mean, standard deviaton and desired image size for resizing when using VGG19 model
+        Initializes mean, standard deviaton and desired image size for resizing when using VGG19 model.
         """
+
         self.mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
         self.stdv = np.array([0.229, 0.224, 0.225], dtype=np.float32)
         self.img_size = 512
 
-    def load_img(self, path):
+    def load_img(self, path: str):
         """
         Loading image function.
+
         :param path: Path where the image is stored.
         :return: PIL resized image.
         """
+
         img = Image.open(path)
         img = self.resize(img)
 
         return img
 
-    def _display_img(self, img_list, titles):
+    def display_img(self, img_list: list, titles: list, save: bool = False):
         """
-        Displays original and dream images.
+        Displays and saves dream images in Output folder if specified.
 
-        :param img_list: List of images to display, first one should be original one always.
-        :param titles: List of layers used for dream images.
+        :param img_list: List of images to display, first one should always be original image and the rest dream images.
+        :param titles: Layers used for creating dream images.
+        :param save: Optional argument specifying if dream images should be saved. Default behaviour is not saving them.
+        :return:
         """
 
-        titles = ["original"] + titles
-
-        f = plt.figure(figsize=(16, 8))
-
-        for i in range(len(img_list)):
-            f.add_subplot(1, len(img_list), i + 1)
-            plt.title(titles[i])
-            plt.axis('off')
-            if i > 0:
-                plt.imshow(self.denormalize(img_list[i]))
-            else:
-                plt.imshow(img_list[i])
-        plt.show()
-
-    def display_img(self, img_list, titles):
+        print("\n Press ESC to exit.")
 
         cv.namedWindow("DeepDream", cv.WINDOW_NORMAL)
 
@@ -78,12 +72,23 @@ class Utils:
         i = 0
         n = len(img_list)
 
+        # Make a dir in Output folder with unique name corresponding to the current date and time
+        if save:
+            today = datetime.now()
+            path = "./Output/" + today.strftime('%H_%M_%S_%d_%m_%Y')
+            os.mkdir(path)
+
         while True:
-            if i!=0:
-                opencvImage = cv.cvtColor(self.denormalize(img_list[i]), cv.COLOR_RGB2BGR)
+            if i != 0:
+                # We need to denormalize dream image before displaying it
+                cv_img = cv.cvtColor(self.denormalize(img_list[i]), cv.COLOR_RGB2BGR)
+                if save:
+                    filename = path + "/" + titles[i] + ".jpg"
+                    cv.imwrite(filename, cv_img * 255)  # mul by 255 because our img is in range [0,1]
             else:
-                opencvImage = cv.cvtColor(np.array(img_list[0]), cv.COLOR_RGB2BGR)
-            cv.imshow("DeepDream", opencvImage)
+                cv_img = cv.cvtColor(np.array(img_list[0]), cv.COLOR_RGB2BGR)
+
+            cv.imshow("DeepDream", cv_img)
 
             k = cv.waitKey(100)
 
@@ -92,12 +97,11 @@ class Utils:
             if k == 97:
                 i = (i-1)%n
             if k == 27:
-                print("ESC has been pressed")
                 break
 
         cv.destroyAllWindows()
 
-    def clip(self, tensor):
+    def clip(self, tensor: torch.Tensor):
         """
         Clips the image in desired [min,max] pixel bounds.
 
@@ -123,7 +127,6 @@ class Utils:
         stdv = self.stdv.reshape((3, 1, 1))
         mean = self.mean.reshape((3, 1, 1))
 
-        tensor = (tensor * stdv) + mean # Inverse of normalization
-        #tensor = T.ToPILImage()(tensor)
+        tensor = (tensor * stdv) + mean  # Inverse of normalization
 
         return tensor.numpy().transpose(1, 2, 0)

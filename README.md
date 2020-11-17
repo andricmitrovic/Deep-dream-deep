@@ -7,11 +7,9 @@ Implementation of DeepDream in PyTorch, WIP.
 
 Todo:
 
-  - save images
-  
-  - update readme
-  
   - from noise image
+  
+  - update readme ( add results, pictures from different layer, use some other pictures)
   
   - different models trained on ImageNet for comparison
   

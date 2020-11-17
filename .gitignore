@@ -1,3 +1,4 @@
 .idea
 __pycache__
 Models/__pycache__
+Output/*
