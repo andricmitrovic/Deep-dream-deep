@@ -103,10 +103,11 @@ if __name__ == "__main__":
               'conv4_1', 'conv4_2', 'conv4_3', 'conv4_4',
               'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
     '''
-    layers = ['conv3_1', 'conv4_2']
+    layers = ['conv5_3']
 
     ut = Utils(model_name)
-    input_img = ut.load_img("./starry_night.jpg")
+    #input_img = ut.load_img("./starry_night.jpg")
+    input_img = ut.load_img()
 
     display_list = [input_img]
     for layer in layers:

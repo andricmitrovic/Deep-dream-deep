@@ -41,16 +41,23 @@ class Utils:
         self.stdv = np.array([0.229, 0.224, 0.225], dtype=np.float32)
         self.img_size = 512
 
-    def load_img(self, path: str):
+    def load_img(self, path: str = None):
         """
         Loading image function.
 
-        :param path: Path where the image is stored.
+        :param path: Optional path of the image, default value is None and the dream will be made from noise img.
         :return: PIL resized image.
         """
-
-        img = Image.open(path)
-        img = self.resize(img)
+        if path is None:
+            shape = (self.img_size, self.img_size, 3)
+            img = Image.fromarray(np.random.uniform(low=0, high=255, size=shape).astype(np.uint8), 'RGB')
+            print(img.size)
+            #img = np.random.uniform(low=0, high=255, size=shape).astype(np.uint8)
+            #print(img.shape)
+        else:
+            img = Image.open(path)
+            img = self.resize(img)
+            print(img.size)
 
         return img
 
