@@ -17,9 +17,7 @@ Current functionality:
 
 Todo:
 
-  - progress bar
-
-  - from noise image
+  - bad output from noise image dreaming
   
   - update readme ( add results, pictures from different layer, use some other pictures)
   
