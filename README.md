@@ -46,6 +46,6 @@ conv5_1, conv5_2, conv5_3, conv5_4
 
 Usefull materials I found while working on this project:
 
-https://github.com/Adi-iitd/AI-Art/blob/master/DeepDream.py
+https://github.com/Adi-iitd/AI-Art/blob/master/src/StyleTransfer/DeepDream.py
 
 https://github.com/gordicaleksa/pytorch-deepdream
