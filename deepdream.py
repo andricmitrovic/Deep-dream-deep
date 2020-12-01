@@ -2,6 +2,7 @@ from Models.vgg19_modified import VGG19_modified
 from utils import *
 import scipy.ndimage as nd
 from scipy.ndimage.filters import gaussian_filter
+from tqdm import tqdm
 
 
 class DeepDreamClass():
@@ -20,9 +21,9 @@ class DeepDreamClass():
         # Clone and send image to gpu if available
         image = image.clone()
         image = image.to(device)
-
         '''
-        We set requires_grad to True because we want to calculate the gradient with respect to the input tensor.
+        We set requires_grad to True because we want to calculate the gradient with respect to the input tensor,
+        since our input image represents a learnable parameter in deep dream.
         Note that if we set requires_grad to True before cloning, since torch.clone() is a differentiable function 
         it would be included in our computational graph.
         '''
@@ -53,8 +54,8 @@ class DeepDreamClass():
             image.data = ut.clip(image.data)    # Clip image to be in the desired bounds
             image.grad.data.zero_()             # Clear the grad for the next iteration calculations
 
-            if i % 50 == 0:
-                print(f"After {i} iterations, Loss: {round(tot_loss.item(), 3)}")
+            # if i % 50 == 0:
+            #    print(f"After {i} iterations, Loss: {round(tot_loss.item(), 3)}")
 
         # In the main loop all tensor calculations are done on cpu so we return image on cpu with that in mind
         return image.data.cpu()
@@ -76,10 +77,10 @@ class DeepDreamClass():
         dream_image = None
 
         # For each octave we extract details and combine them with original image at that scale
-        for num, octave in enumerate(octaves):
+        for num, octave in enumerate(tqdm(octaves)):
             # Zoom the details tensor to the required size which is the size of the octave we are currently processing
             details = torch.tensor(nd.zoom(details, np.array(octave.shape) / np.array(details.shape), order=1))
-            print(f"\n{num+1}/{self.scales} : Current Shape of the details tensor: {details[0].shape}")
+            # print(f"\n{num+1}/{self.scales} : Current Shape of the details tensor: {details[0].shape}")
 
             # Combine details tensor which contains patters and original image
             enhanced_image = details + octave
@@ -95,11 +96,14 @@ class DeepDreamClass():
 if __name__ == "__main__":
     # Define which model and layers we are using
     model_name = "vgg19"
+    '''
     layers = ['conv1_1', 'conv1_2',
               'conv2_1', 'conv2_2',
               'conv3_1', 'conv3_2', 'conv3_3', 'conv3_4',
               'conv4_1', 'conv4_2', 'conv4_3', 'conv4_4',
               'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
+    '''
+    layers = ['conv3_1', 'conv4_2']
 
     ut = Utils(model_name)
     input_img = ut.load_img("./starry_night.jpg")
