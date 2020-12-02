@@ -1,13 +1,14 @@
 import torchvision.transforms as T
 import torch
-import urllib
 from PIL import Image
-import matplotlib.pyplot as plt
 import numpy as np
 import cv2 as cv
 from datetime import datetime
 import os
+from scipy.ndimage.filters import gaussian_filter
 
+import numbers
+import math
 
 if torch.cuda.is_available():
     device = torch.device('cuda')
@@ -39,7 +40,8 @@ class Utils:
 
         self.mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
         self.stdv = np.array([0.229, 0.224, 0.225], dtype=np.float32)
-        self.img_size = 512
+        #self.img_size = 512
+        self.img_size = 600
 
     def load_img(self, path: str = None):
         """
@@ -51,13 +53,9 @@ class Utils:
         if path is None:
             shape = (self.img_size, self.img_size, 3)
             img = Image.fromarray(np.random.uniform(low=0, high=255, size=shape).astype(np.uint8), 'RGB')
-            print(img.size)
-            #img = np.random.uniform(low=0, high=255, size=shape).astype(np.uint8)
-            #print(img.shape)
         else:
             img = Image.open(path)
             img = self.resize(img)
-            print(img.size)
 
         return img
 
@@ -74,6 +72,7 @@ class Utils:
         print("\n Press ESC to exit.")
 
         cv.namedWindow("DeepDream", cv.WINDOW_NORMAL)
+        cv.resizeWindow("DeepDream", img_list[0].size[0], img_list[0].size[1])
 
         titles = ["original"] + titles
         i = 0
@@ -137,3 +136,76 @@ class Utils:
         tensor = (tensor * stdv) + mean  # Inverse of normalization
 
         return tensor.numpy().transpose(1, 2, 0)
+
+    def random_circular_spatial_shift(self, tensor, h_shift, w_shift, should_undo=False):
+        if should_undo:
+            h_shift = -h_shift
+            w_shift = -w_shift
+        with torch.no_grad():
+            rolled = torch.roll(tensor, shifts=(h_shift, w_shift), dims=(2, 3))
+            rolled.requires_grad = True
+            return rolled
+
+    def gausian_blur(self, grad: torch.tensor, sigma):
+        grad = grad.data.cpu()
+        grad_1 = gaussian_filter(grad, sigma=sigma * 0.5)
+        grad_2 = gaussian_filter(grad, sigma=sigma * 1.0)
+        grad_3 = gaussian_filter(grad, sigma=sigma * 2.0)
+        return torch.tensor(grad_1 + grad_2 + grad_3, device=device)
+
+
+class CascadeGaussianSmoothing(torch.nn.Module):
+    """
+    Apply gaussian smoothing seperately for each channel (depthwise convolution)
+    Arguments:
+        kernel_size (int, sequence): Size of the gaussian kernel.
+        sigma (float, sequence): Standard deviation of the gaussian kernel.
+    """
+    def __init__(self, kernel_size, sigma):
+        super().__init__()
+
+        cascade_coefficients = [0.5, 1.0, 2.0]  # std multipliers
+
+        sigmas = [[coeff * sigma, coeff * sigma] for coeff in cascade_coefficients]  # isotropic Gaussian
+
+        self.pad = int(kernel_size / 2)  # Used to pad the channels so that after applying the kernel we have same size
+
+        if isinstance(kernel_size, numbers.Number):
+            kernel_size = [kernel_size, kernel_size]
+
+        meshgrids = torch.meshgrid([torch.arange(size, dtype=torch.float32) for size in kernel_size])
+
+        # The gaussian kernel is the product of the gaussian function of each dimension.
+        kernels = []
+        for sigma in sigmas:
+            kernel = 1
+            for size_1d, std_1d, mgrid in zip(kernel_size, sigma, meshgrids):
+                mean = (size_1d - 1) / 2
+                kernel *= 1 / (std_1d * math.sqrt(2 * math.pi)) * torch.exp(-((mgrid - mean) / std_1d) ** 2 / 2)
+            kernels.append(kernel)
+
+        prepared_kernels = []
+        for kernel in kernels:
+            # Make sure sum of values in gaussian kernel equals 1.
+            kernel = kernel / torch.sum(kernel)
+
+            # Reshape to depthwise convolutional weight
+            kernel = kernel.view(1, 1, *kernel.shape)
+            kernel = kernel.repeat(3, *[1] * (kernel.dim() - 1))
+            kernel = kernel.to('cuda')
+            prepared_kernels.append(kernel)
+
+        self.register_buffer('weight1', prepared_kernels[0])
+        self.register_buffer('weight2', prepared_kernels[1])
+        self.register_buffer('weight3', prepared_kernels[2])
+        self.conv = torch.nn.functional.conv2d
+
+    def forward(self, input):
+        """
+        Apply gaussian filter to input.
+        """
+        input = torch.nn.functional.pad(input, [self.pad, self.pad, self.pad, self.pad], mode='reflect')
+        grad1 = self.conv(input, weight=self.weight1, groups=3)
+        grad2 = self.conv(input, weight=self.weight2, groups=3)
+        grad3 = self.conv(input, weight=self.weight3, groups=3)
+        return grad1 + grad2 + grad3
