@@ -6,5 +6,5 @@ Input/*
 *.jpg
 *.jpeg
 
-!Output/ReadMe
 !Input/ReadMe
+!Output/ReadMe
