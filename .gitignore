@@ -2,6 +2,8 @@
 __pycache__
 Models/__pycache__
 Output/*
+*.jpg
+*.jpeg
 
 !Output/ReadMe
-!Output/dream_starry_night
+!Input/ReadMe

@@ -115,9 +115,16 @@ class Utils:
         :return: Clipped tensor.
         """
 
+        '''
         for channel in range(tensor.shape[1]):
             ch_m, ch_s = self.mean[channel], self.stdv[channel]
             tensor[0, channel] = torch.clamp(tensor[0, channel], -ch_m / ch_s, (1 - ch_m) / ch_s)
+        '''
+
+        LOWER_IMAGE_BOUND = torch.tensor((-self.mean / self.stdv).reshape(1, -1, 1, 1)).to('cuda')
+        UPPER_IMAGE_BOUND = torch.tensor(((1 - self.mean) / self.stdv).reshape(1, -1, 1, 1)).to('cuda')
+
+        tensor.data = torch.max(torch.min(tensor, UPPER_IMAGE_BOUND), LOWER_IMAGE_BOUND)
 
         return tensor
 
@@ -152,6 +159,8 @@ class Utils:
         grad_2 = gaussian_filter(grad, sigma=sigma * 1.0)
         grad_3 = gaussian_filter(grad, sigma=sigma * 2.0)
         return torch.tensor(grad_1 + grad_2 + grad_3, device=device)
+
+
 
 
 class CascadeGaussianSmoothing(torch.nn.Module):
