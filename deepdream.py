@@ -12,8 +12,8 @@ class DeepDreamClass():
         self.learning_rate = 0.09      # Step_size to use while optimizing image
         self.num_iters = 10            # Number of iterations to run at a single scale
 
-        self.num_scales = 9           # Number of scaled down levels of the original image
-        self.scale_coef = 1.4         # Parameter for downsampling image
+        self.num_scales = 7           # Number of scaled down levels of the original image
+        self.scale_coef = 1.6         # Parameter for downsampling image
 
         self.spatial_shift_size = 32   # Number of pixels to randomly shift image before grad ascent
 
@@ -172,21 +172,21 @@ if __name__ == "__main__":
     # Define which model and layers we are using
     model_name = "vgg19"
 
-    '''
+
     layers = ['conv1_1', 'conv1_2',
               'conv2_1', 'conv2_2',
               'conv3_1', 'conv3_2', 'conv3_3', 'conv3_4',
               'conv4_1', 'conv4_2', 'conv4_3', 'conv4_4',
               'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
-    '''
 
-    layers = ['conv4_3']                        # Specify the layers for the nn to use to generate the dream
+
+    #layers = ['conv5_2']                        # Specify the layers for the nn to use to generate the dream
     dream_iteratively = False                   # False if dream is generate with one pass of the program,
                                                 # True if you want the output to be fed back to the program.
     num_of_runs = 10                            # If dream_iteratively is True set this to the desired number of runs
 
-    #path = "Input/starry_night.jpg"            # Path of the input image or None for static image
-    path = None
+    path = "Input/leaves.jpg"            # Path of the input image or None for static image
+    #path = None
 
 
     ut = Utils(model_name)
