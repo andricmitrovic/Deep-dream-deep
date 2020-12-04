@@ -5,17 +5,17 @@ Implementation of DeepDream in PyTorch, WIP.
 <br>
 
 <p align="center">
-<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/starry_night.jpg" width="330">
-<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv3_2.jpg" width="330">
-<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv5_1.jpg" width="330">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/starry_night.jpg" width="400">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv3_2.jpg" width="400">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv5_1.jpg" width="400">
 </p>
 
 <br>
 
 <p align="center">
-<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/leaves.jpg" width="330">
-<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/leaves_vgg19_conv4_2.jpg" width="330">
-<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/leaves_vgg19_conv5_4.jpg" width="330">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/leaves.jpg" width="400">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/leaves_vgg19_conv4_2.jpg" width="400">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/leaves_vgg19_conv5_4.jpg" width="400">
 </p>
 
 <br>
