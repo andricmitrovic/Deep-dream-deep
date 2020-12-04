@@ -4,8 +4,7 @@ Implementation of DeepDream in PyTorch, WIP.
 
 <br>
 
-
-![](https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/starry_night.jpg)
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/starry_night.jpg" width=300 height=300>
 
 
 
