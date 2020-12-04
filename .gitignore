@@ -2,7 +2,5 @@
 __pycache__
 Models/__pycache__
 Output/*
-Input/*
 
-!Input/ReadMe
 !Output/ReadMe
