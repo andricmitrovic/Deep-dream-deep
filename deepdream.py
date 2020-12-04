@@ -12,8 +12,8 @@ class DeepDreamClass():
         self.learning_rate = 0.09      # Step_size to use while optimizing image
         self.num_iters = 10            # Number of iterations to run at a single scale
 
-        self.num_scales = 4           # Number of scaled down levels of the original image
-        self.scale_coef = 1.4          # Parameter for downsampling image
+        self.num_scales = 9           # Number of scaled down levels of the original image
+        self.scale_coef = 1.4         # Parameter for downsampling image
 
         self.spatial_shift_size = 32   # Number of pixels to randomly shift image before grad ascent
 
@@ -180,20 +180,50 @@ if __name__ == "__main__":
               'conv5_1', 'conv5_2', 'conv5_3', 'conv5_4']
     '''
 
-    layers = ['conv4_3']
-    path = "Input/tiger.jpg"
-    #path = None
+    layers = ['conv4_3']                        # Specify the layers for the nn to use to generate the dream
+    dream_iteratively = False                   # False if dream is generate with one pass of the program,
+                                                # True if you want the output to be fed back to the program.
+    num_of_runs = 10                            # If dream_iteratively is True set this to the desired number of runs
+
+    #path = "Input/starry_night.jpg"            # Path of the input image or None for static image
+    path = None
+
 
     ut = Utils(model_name)
     input_img = ut.load_img(path)
 
     display_list = [input_img]
-    for layer in layers:
-        print(f"\n{layer}")
-        dream_object = DeepDreamClass(input_img, [layer])
-        if path is None:
-            dream_object.octave_function = "input"
-        output_img = dream_object.deepdream()
-        display_list.append(output_img)
+
+    if dream_iteratively:
+
+        layers = layers[0] * num_of_runs
+
+        for run in range(num_of_runs):
+            print(f"\n{layers[run]} {run}")
+
+            print(input_img.size)
+
+            dream_object = DeepDreamClass(input_img, [layers[run]])
+            if path is None:
+                dream_object.octave_function = "input"
+            output_img = dream_object.deepdream()
+            display_list.append(output_img)
+
+            output_img = ut.denormalize(output_img)
+            output_img = (output_img*255).astype(np.uint8)
+
+            #output_img = nd.zoom(output_img, 1.1)
+
+            input_img = Image.fromarray(output_img, 'RGB')
+
+            layers[run] = layers[run] + "_" + str(run)
+    else:
+        for layer in layers:
+            print(f"\n{layer}")
+            dream_object = DeepDreamClass(input_img, [layer])
+            if path is None:
+                dream_object.octave_function = "input"
+            output_img = dream_object.deepdream()
+            display_list.append(output_img)
 
     ut.display_img(display_list, layers, save=True)
