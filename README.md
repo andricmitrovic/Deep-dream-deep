@@ -3,16 +3,26 @@
 Implementation of DeepDream in PyTorch, WIP.
 
 <br>
+
+<span>
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/starry_night.jpg" width="330">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv3_2.jpg" width="330">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv5_1.jpg" width="330">
+</span>
+
+<span>
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/leaves.jpg" width="300">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/leaves_vgg19_conv4_2.jpg" width="300">
+<img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/leaves_vgg19_conv5_4.jpg" width="300">
+</span>
+
 <span>
 <img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/starry_night.jpg" width="300">
 <img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv3_2.jpg" width="300">
 <img src="https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Beautiful_dreams/starry_night_vgg19_conv5_1.jpg" width="300">
 </span>
 
-
-
-
-
+<br>
 
 Original blog: https://ai.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html
 
