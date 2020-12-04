@@ -4,30 +4,13 @@ Implementation of DeepDream in PyTorch, WIP.
 
 <br>
 
-Current functionality:
 
-  - create dream image from input image using VGG19 model
-  
-  - create more than one dream image using different layers in one execution
-  
-  - display dream images ( "a" left image, "d" right image, "esc" exit) and save them
-
-<br>
+![https://github.com/andricmitrovic/DeepDream-PyTorch/blob/main/Input/starry_night.jpg]
 
 
-Todo:
 
-  - bad output from noise image dreaming
-  
-  - update readme ( add results, pictures from different layer, use some other pictures)
-  
-  - different models trained on ImageNet for comparison
-  
-  - models trained on Places 365
-  
-  - gif
-  
-<br>
+
+
 
 
 Original blog: https://ai.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html
