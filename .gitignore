@@ -3,7 +3,5 @@ __pycache__
 Models/__pycache__
 Output/*
 Input/*
-*.jpg
-*.jpeg
 
 !Input/ReadMe
