@@ -27,7 +27,7 @@ Implementation of DeepDream in PyTorch, WIP.
 
 <br>
 
-<p align="center">Video: [![DeepDream through layers](https://img.youtube.com/vi/1ZqhB3AkeV4/0.jpg)](https://www.youtube.com/watch?v=1ZqhB3AkeV4&ab_channel=NikolaAndricMitrovic)</p>
+<p align="center">[![DeepDream through layers](https://img.youtube.com/vi/1ZqhB3AkeV4/0.jpg)](https://www.youtube.com/watch?v=1ZqhB3AkeV4&ab_channel=NikolaAndricMitrovic)</p>
 <br>
 https://www.youtube.com/watch?v=1ZqhB3AkeV4&ab_channel=NikolaAndricMitrovic
 
