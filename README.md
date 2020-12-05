@@ -28,7 +28,7 @@ Implementation of DeepDream in PyTorch, WIP.
 <br>
 
 [![DeepDream through layers](https://img.youtube.com/vi/1ZqhB3AkeV4/0.jpg)](https://www.youtube.com/watch?v=1ZqhB3AkeV4&ab_channel=NikolaAndricMitrovic)
-
+https://www.youtube.com/watch?v=1ZqhB3AkeV4&ab_channel=NikolaAndricMitrovic
 
 Original blog: https://ai.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html
 
