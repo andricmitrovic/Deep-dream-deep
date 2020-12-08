@@ -3,7 +3,6 @@
 <h3>Introduction</h3>
 
 Implementation of DeepDream in PyTorch based on the Google Research <a href="https://ai.googleblog.com/2015/06/inceptionism-going-deeper-into-neural.html">blog post</a> (you can read here more about the inspiration for DeepDream and how is it supposed to work). \
-
 You can also find the original implementation github repo <a href="https://github.com/google/deepdream">here</a>.
 
 
